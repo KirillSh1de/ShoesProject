@@ -130,6 +130,7 @@
 			Font = new Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
 			Margin = new Padding(4);
 			Name = "Form_log";
+			StartPosition = FormStartPosition.CenterScreen;
 			Text = "Авторизация";
 			panel1.ResumeLayout(false);
 			panel1.PerformLayout();
