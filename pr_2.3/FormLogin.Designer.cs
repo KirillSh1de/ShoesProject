@@ -1,6 +1,6 @@
 ﻿namespace pr_2._3
 {
-    partial class Form_log
+    partial class FormLog
     {
         /// <summary>
         ///  Required designer variable.
@@ -27,10 +27,10 @@
 		///  the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent() {
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_log));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLog));
 			panel1 = new Panel();
-			textBox2 = new TextBox();
-			textBox1 = new TextBox();
+			txtPass = new TextBox();
+			txtLog = new TextBox();
 			pictureBox1 = new PictureBox();
 			label2 = new Label();
 			label1 = new Label();
@@ -42,8 +42,8 @@
 			// 
 			// panel1
 			// 
-			panel1.Controls.Add(textBox2);
-			panel1.Controls.Add(textBox1);
+			panel1.Controls.Add(txtPass);
+			panel1.Controls.Add(txtLog);
 			panel1.Controls.Add(pictureBox1);
 			panel1.Controls.Add(label2);
 			panel1.Controls.Add(label1);
@@ -55,19 +55,20 @@
 			panel1.Size = new Size(484, 361);
 			panel1.TabIndex = 0;
 			// 
-			// textBox2
+			// txtPass
 			// 
-			textBox2.Location = new Point(76, 233);
-			textBox2.Name = "textBox2";
-			textBox2.Size = new Size(340, 29);
-			textBox2.TabIndex = 6;
+			txtPass.Location = new Point(76, 233);
+			txtPass.Name = "txtPass";
+			txtPass.Size = new Size(340, 29);
+			txtPass.TabIndex = 6;
+			txtPass.UseSystemPasswordChar = true;
 			// 
-			// textBox1
+			// txtLog
 			// 
-			textBox1.Location = new Point(76, 163);
-			textBox1.Name = "textBox1";
-			textBox1.Size = new Size(340, 29);
-			textBox1.TabIndex = 5;
+			txtLog.Location = new Point(76, 163);
+			txtLog.Name = "txtLog";
+			txtLog.Size = new Size(340, 29);
+			txtLog.TabIndex = 5;
 			// 
 			// pictureBox1
 			// 
@@ -108,6 +109,7 @@
 			btn_log_guest.TabIndex = 1;
 			btn_log_guest.Text = "ВОЙТИ КАК ГОСТЬ";
 			btn_log_guest.UseVisualStyleBackColor = true;
+			btn_log_guest.Click += Btn_log_guest_Click;
 			// 
 			// btn_log
 			// 
@@ -118,9 +120,9 @@
 			btn_log.TabIndex = 0;
 			btn_log.Text = "ВОЙТИ";
 			btn_log.UseVisualStyleBackColor = true;
-			btn_log.Click += btn_log_Click;
+			btn_log.Click += Btn_log_Click;
 			// 
-			// Form_log
+			// FormLog
 			// 
 			AutoScaleDimensions = new SizeF(10F, 21F);
 			AutoScaleMode = AutoScaleMode.Font;
@@ -129,7 +131,7 @@
 			Controls.Add(panel1);
 			Font = new Font("Times New Roman", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
 			Margin = new Padding(4);
-			Name = "Form_log";
+			Name = "FormLog";
 			StartPosition = FormStartPosition.CenterScreen;
 			Text = "Авторизация";
 			panel1.ResumeLayout(false);
@@ -146,7 +148,7 @@
 		private Label label1;
 		private Button btn_log_guest;
 		private Button btn_log;
-		private TextBox textBox2;
-		private TextBox textBox1;
+		private TextBox txtPass;
+		private TextBox txtLog;
 	}
 }
