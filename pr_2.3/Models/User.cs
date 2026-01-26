@@ -23,4 +23,6 @@ public partial class User
     public virtual Role IdRoleNavigation { get; set; } = null!;
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
+    public string FullName => $"{LastName} {FirstName} {MiddleName}";
 }
