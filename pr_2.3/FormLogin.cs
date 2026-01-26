@@ -1,11 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using Microsoft.VisualBasic.ApplicationServices;
 using pr_2._3.Models;
 
 namespace pr_2._3 {
