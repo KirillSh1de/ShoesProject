@@ -22,14 +22,14 @@ namespace pr_2._3 {
 			colInfo.FillWeight = 60;
 			colInfo.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
-			var colDiscout = new DataGridViewTextBoxColumn();
-			colDiscout.Name = "colDiscout";
-			colDiscout.FillWeight = 10;
-			colDiscout.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+			var colDiscount = new DataGridViewTextBoxColumn();
+			colDiscount.Name = "colDiscount";
+			colDiscount.FillWeight = 10;
+			colDiscount.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
 			dgvProducts.Columns.AddRange(
 			[
-				colPhoto,colInfo,colDiscout
+				colPhoto,colInfo,colDiscount
 			]);
 
 			CurrentUser = user;
@@ -48,6 +48,7 @@ namespace pr_2._3 {
 						.Include(i => i.Manufacturer)
 						.Include(i => i.Supplier)
 						.Include(i => i.Measure)
+						.Include(i => i.ProductType)
 						.ToList();
 
 					dgvProducts.SuspendLayout();
@@ -67,6 +68,9 @@ namespace pr_2._3 {
 
 						ApplyRowStyles(row, product);
 					}
+
+					dgvProducts.ResumeLayout();
+					dgvProducts.AutoResizeRows(DataGridViewAutoSizeRowsMode.AllCells);
 				}
 			} catch (Exception ex) {
 				MessageBox.Show(
@@ -122,14 +126,6 @@ namespace pr_2._3 {
 		private Image? LoadProductImage(string photoUrl) {
 			if (!String.IsNullOrEmpty(photoUrl) && System.IO.File.Exists(photoUrl)) {
 				return Image.FromFile(photoUrl);
-			}
-
-			Bitmap bmp = new Bitmap(150, 100);
-			using (Graphics g = Graphics.FromImage(bmp)) {
-				g.Clear(Color.White);
-				g.DrawRectangle(Pens.LightGray, 0, 0, 149, 99);
-
-
 			}
 			return Resources.picture;
 
