@@ -62,8 +62,9 @@
 			btn_log.Name = "btn_log";
 			btn_log.Size = new Size(84, 30);
 			btn_log.TabIndex = 1;
-			btn_log.Text = "Войти";
+			btn_log.Text = "Выход";
 			btn_log.UseVisualStyleBackColor = true;
+			btn_log.Click += Btn_log_Click;
 			// 
 			// dgvProducts
 			// 

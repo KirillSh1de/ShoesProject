@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using pr_2._3.Models;
 using pr_2._3.Properties;
 
@@ -47,8 +40,7 @@ namespace pr_2._3 {
 			LoadProducts();
 		}
 
-		private void LoadProducts() 
-		{
+		private void LoadProducts() {
 			try {
 				using (var db = new ShopDbContext()) {
 					var products = db.Products
@@ -70,6 +62,10 @@ namespace pr_2._3 {
 						row.Cells["colInfo"].Value = FormatProductInfo(product);
 
 						row.Cells["colDiscount"].Value = $"{product.Discount}%";
+						row.Cells["colDiscount"].Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+
+						ApplyRowStyles(row, product);
 					}
 				}
 			} catch (Exception ex) {
@@ -81,8 +77,29 @@ namespace pr_2._3 {
 			}
 		}
 
-		private string FormatProductInfo(Product product)
-		{
+		private void ApplyRowStyles(DataGridViewRow row, Product product) {
+			if (product.Discount > 15) {
+				row.DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#2E8B57");
+				row.DefaultCellStyle.ForeColor = Color.White;
+			}
+
+			if (product.CointInStock <= 0) {
+				row.DefaultCellStyle.BackColor = Color.LightBlue;
+				if (product.Discount <= 15) {
+					row.DefaultCellStyle.ForeColor = Color.Black;
+				}
+			}
+
+			if (product.Discount > 0) {
+				row.Cells["colDiscount"].Style.ForeColor = Color.Red;
+				row.Cells["colDiscount"].Style.Font = new Font(
+					"Times New Roman",
+					12,
+					FontStyle.Bold);
+			}
+		}
+
+		private string FormatProductInfo(Product product) {
 			string priceText;
 
 			if (product.Discount > 0) {
@@ -116,6 +133,15 @@ namespace pr_2._3 {
 			}
 			return Resources.picture;
 
+		}
+
+		private void Btn_log_Click(object sender, EventArgs e) {
+			this.DialogResult = DialogResult.Cancel;
+			this.Close();
+		}
+
+		protected override void OnFormClosing(FormClosingEventArgs e) {
+			base.OnFormClosing(e);
 		}
 	}
 }
