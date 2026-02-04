@@ -12,8 +12,8 @@ using pr_2._3.Properties;
 
 namespace pr_2._3 {
 	public partial class FormOrders : Form {
-		public User _currentUser { get; private set; }
-		public bool _isGuest { get; private set; }
+		public User currentUser { get; private set; }
+		public bool isGuest { get; private set; }
 
 		public FormOrders(User user, bool guest) {
 			InitializeComponent();
@@ -56,10 +56,10 @@ namespace pr_2._3 {
 				colDeliveryPoint, colStatus, colDetails
 			]);
 
-			_currentUser = user;
-			_isGuest = guest;
+			currentUser = user;
+			isGuest = guest;
 
-			lblUserName.Text = _isGuest ? "Гость" : _currentUser.FullName;
+			lblUserName.Text = isGuest ? "Гость" : currentUser.FullName;
 
 			LoadOrders();
 		}
@@ -72,7 +72,7 @@ namespace pr_2._3 {
 						.Include(i => i.DeliveryPoint)
 						.Include(i => i.ProductsOrders)
 							.ThenInclude(tp => tp.Product)
-						.Where(w => w.User == _currentUser.Id)
+						.Where(w => w.IdUser == currentUser.Id)
 						.OrderByDescending(o => o.OrderDate)
 						.ToList();
 
@@ -86,15 +86,14 @@ namespace pr_2._3 {
 						row.Cells["colCode"].Value = order.Code;
 						row.Cells["colOrderDate"].Value = order.OrderDate.ToString("dd.MM.yyyy");
 
-						if (order.DeliveryDate.HasValue) {
-							row.Cells["colDeliveryDate"].Value = order.DeliveryDate.Value.ToString("dd.MM.yyyy");
+						if (order.DeliveryDate != default(DateOnly)) {
+							row.Cells["colDeliveryDate"].Value = order.DeliveryDate.ToString("dd.MM.yyyy");
 						} else {
 							row.Cells["colDeliveryDate"].Value = "Не назначена";
 						}
 
-						row.Cells["colDeliveryPoint"].Value = order.DeliveryPoint?.Address ?? "Не указан";
+						row.Cells["colDeliveryPoint"].Value = order.DeliveryPoint?.DeliveryAddress ?? "Не указан";
 						row.Cells["colStatus"].Value = order.Status?.StatusName ?? "Не определен";
-
 						row.Cells["colDetails"].Value = FormatOrderDetails(order);
 
 						ApplyRowStyles(row, order);
@@ -168,12 +167,12 @@ namespace pr_2._3 {
 
 			details.AppendLine("Состав заказа:");
 
-			foreach (var orderProduct in order.OrderProducts) {
-				decimal itemTotal = orderProduct.Quantity * orderProduct.PricePerUnit;
+			foreach (var orderProduct in order.ProductsOrders) {
+				decimal itemTotal = orderProduct.Quantity * orderProduct.Product.Price;
 				totalAmount += itemTotal;
 
 				details.AppendLine($"• {orderProduct.Product.Description}");
-				details.AppendLine($"  {orderProduct.Quantity} шт. × {orderProduct.PricePerUnit:C} = {itemTotal:C}");
+				details.AppendLine($"  {orderProduct.Quantity} шт. × {orderProduct.Product.Price:C} = {itemTotal:C}");
 			}
 
 			details.AppendLine($"\nИтого: {totalAmount:C}");
@@ -184,43 +183,25 @@ namespace pr_2._3 {
 		private void ApplyRowStyles(DataGridViewRow row, Order order) {
 			string status = order.Status?.StatusName ?? "";
 
-			// Цветовая схема по статусам
 			switch (status.ToLower()) {
-				case "новый":
-					row.DefaultCellStyle.BackColor = Color.LightYellow;
-					break;
-				case "в обработке":
-					row.DefaultCellStyle.BackColor = Color.LightBlue;
-					break;
-				case "отправлен":
-				case "доставляется":
-					row.DefaultCellStyle.BackColor = Color.LightGreen;
-					break;
-				case "доставлен":
+				case "завершённый":
 					row.DefaultCellStyle.BackColor = Color.LightGray;
 					row.DefaultCellStyle.ForeColor = Color.DarkGray;
 					break;
-				case "отменен":
-					row.DefaultCellStyle.BackColor = Color.LightCoral;
-					break;
-				default:
-					row.DefaultCellStyle.BackColor = Color.White;
+				case "новый":
+					row.DefaultCellStyle.BackColor = Color.LightBlue;
 					break;
 			}
-
 		}
 
 		private void ApplyDemoRowStyles(DataGridViewRow row, string status) {
 			switch (status.ToLower()) {
-				case "доставлен":
+				case "завершённый":
 					row.DefaultCellStyle.BackColor = Color.LightGray;
 					row.DefaultCellStyle.ForeColor = Color.DarkGray;
 					break;
-				case "в обработке":
+				case "новый":
 					row.DefaultCellStyle.BackColor = Color.LightBlue;
-					break;
-				case "отправлен":
-					row.DefaultCellStyle.BackColor = Color.LightGreen;
 					break;
 			}
 		}

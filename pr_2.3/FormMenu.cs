@@ -45,12 +45,18 @@ namespace pr_2._3 {
 					MessageBoxIcon.Information);
 				return;
 			}
+			try {
+				if (_currentUser == null) {
+					MessageBox.Show("Ошибка: пользователь не определен", "Ошибка");
+					return;
+				}
 
-			MessageBox.Show(
-				"Форма заказов будет открыта здесь",
-				"Информация",
-				MessageBoxButtons.OK,
-				MessageBoxIcon.Information);
+				using (var formOrders = new FormOrders(_currentUser, _isGuest)) {
+					formOrders.ShowDialog();
+				}
+			} catch (Exception ex) {
+				MessageBox.Show($"Ошибка при открытии формы заказов: {ex.Message}", "Ошибка");
+			}
 		}
 
 		private void BtnLogoutMenu_Click(object sender, EventArgs e) {
